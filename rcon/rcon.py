@@ -5,7 +5,7 @@ import random
 import re
 import time
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import cached_property
 from itertools import chain
 from time import sleep
@@ -950,7 +950,7 @@ class Rcon(ServerCtl):
     def _extract_time(raw_timestamp: str) -> datetime:
         """Parse a unix timestamp to a UTC Python datetime"""
         try:
-            return datetime.utcfromtimestamp(int(raw_timestamp))
+            return datetime.fromtimestamp(int(raw_timestamp), timezone.utc)
         except (ValueError, TypeError) as e:
             raise ValueError(f"Time {raw_timestamp} is not a valid integer") from e
 
